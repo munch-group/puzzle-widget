@@ -216,3 +216,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# macOS
+.DS_Store
+._*
+
+# Quarto docs build (this project's docs/ site)
+.quarto/
+_book/
+docs/_inv/
+
+# Claude Code runtime
+.claude-uuid

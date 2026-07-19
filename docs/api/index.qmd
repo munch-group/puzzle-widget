@@ -1,0 +1,20 @@
+# Function reference {.doc .doc-index}
+
+## Widget
+
+The reorderable puzzle widget and the `%%puzzle` cell magic.
+
+
+| | |
+| --- | --- |
+| [PuzzleWidget](PuzzleWidget.qmd#puzzle_widget.PuzzleWidget) | A reorderable list of code lines that checks itself against an expected result. |
+| [widget.register_puzzle_magic](widget.register_puzzle_magic.qmd#puzzle_widget.widget.register_puzzle_magic) | Register the `%%puzzle` cell magic. |
+
+## Checker
+
+The pure exec-and-check engine behind the widget.
+
+
+| | |
+| --- | --- |
+| [checker.run_puzzle](checker.run_puzzle.qmd#puzzle_widget.checker.run_puzzle) | Run ``lines`` (joined with newlines) in a fresh, isolated namespace and |

@@ -1,0 +1,102 @@
+project:
+  type: website
+  output-dir: _build
+  # resources:
+  #   - objects.txt
+  #   - objects-test.txt
+
+execute:
+  freeze: auto
+  echo: true
+
+metadata-files:
+  - api/_sidebar.yml
+
+filters:
+  - "interlinks"
+
+interlinks:
+  fast: true
+  sources:
+    python:
+      url: https://docs.python.org/3/
+    griffe:
+      url: https://mkdocstrings.github.io/griffe/
+    numpy:
+      url: https://numpy.org/doc/stable/
+    pandas:
+      url: https://pandas.pydata.org/docs/
+    matplotlib:
+      url: https://matplotlib.org/stable/
+    scipy:
+      url: https://docs.scipy.org/doc/scipy/
+    statsmodels:
+      url: https://www.statsmodels.org/stable/
+    # quartodoc-test:
+    #   url: https://machow.github.io/quartodoc
+    #   inv: objects-test.txt
+
+website:
+  title: "puzzle-widget"
+  page-navigation: true
+  navbar:
+    left:
+      - href: api/
+        text: API reference
+      # - href: gallery/
+      #   text: Gallery
+    right:
+      - icon: github
+        href: https://github.com/munch-group/puzzle-widget/
+  sidebar:
+    - id: pages
+      title: Get Started
+      style: floating
+      align: left
+      contents:
+        - pages/overview.ipynb
+        - section: "Examples"
+          contents:
+            - pages/example.ipynb                   
+
+lightbox: true
+
+format:
+  html:
+    theme: cosmo
+    css:
+      - api/_styles-quartodoc.css
+      - styles.css
+      # - custom.scss
+    toc: true
+    # code-block-background: false
+    # code-block-border-left: true    
+    # highlight-style: arrow
+    mermaid:
+      theme: neutral 
+
+quartodoc:
+  package: puzzle_widget
+  style: pkgdown
+  dir: api
+  render_interlinks: true
+  options:
+    signature_name: full
+  renderer:
+    style: markdown
+    table_style: description-list
+  sidebar: "api/_sidebar.yml"
+  css: "api/_styles-quartodoc.css"
+
+  sections:
+    - title: Widget
+      desc: |
+        The reorderable puzzle widget and the `%%puzzle` cell magic.
+      contents:
+        - PuzzleWidget
+        - widget.register_puzzle_magic
+    - title: Checker
+      desc: |
+        The pure exec-and-check engine behind the widget.
+      contents:
+        - checker.run_puzzle

@@ -1,0 +1,8 @@
+# Sphinx inventory version 2
+# Project: puzzle_widget
+# Version: 0.0.9999
+# The remainder of this file is compressed using zlib.
+puzzle_widget.PuzzleWidget py:class 1 api/PuzzleWidget.html#puzzle_widget.PuzzleWidget -
+puzzle_widget.widget.PuzzleWidget py:class 1 api/PuzzleWidget.html#puzzle_widget.PuzzleWidget puzzle_widget.PuzzleWidget
+puzzle_widget.widget.register_puzzle_magic py:function 1 api/widget.register_puzzle_magic.html#puzzle_widget.widget.register_puzzle_magic -
+puzzle_widget.checker.run_puzzle py:function 1 api/checker.run_puzzle.html#puzzle_widget.checker.run_puzzle -

@@ -1,0 +1,13 @@
+website:
+  sidebar:
+  - contents:
+    - api/index.qmd
+    - contents:
+      - api/PuzzleWidget.qmd
+      - api/widget.register_puzzle_magic.qmd
+      section: Widget
+    - contents:
+      - api/checker.run_puzzle.qmd
+      section: Checker
+    id: api
+  - id: dummy-sidebar

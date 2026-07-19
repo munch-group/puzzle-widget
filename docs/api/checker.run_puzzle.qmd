@@ -1,0 +1,29 @@
+# checker.run_puzzle { #puzzle_widget.checker.run_puzzle }
+
+```python
+puzzle_widget.checker.run_puzzle(lines, expected)
+```
+
+Run ``lines`` (joined with newlines) in a fresh, isolated namespace and
+check whether the value of the last line equals ``expected``.
+
+Never raises: a ``SyntaxError`` from an unparseable order, or any
+exception raised while running the lines, is caught and reported via
+``PuzzleResult.error`` with ``success=False`` -- both are routine while a
+puzzle is still scrambled, not something callers need to guard against.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+<code>[**lines**]{.parameter-name} [:]{.parameter-annotation-sep} [list of str]{.parameter-annotation}</code>
+
+:   The current candidate order, one statement per line.
+
+<code>[**expected**]{.parameter-name} [:]{.parameter-annotation-sep} [[object](`object`)]{.parameter-annotation}</code>
+
+:   The target value (typically a literal parsed from the ``%%puzzle`` magic's argument).
+
+## Returns {.doc-section .doc-section-returns}
+
+<code>[]{.parameter-name} [:]{.parameter-annotation-sep} [[PuzzleResult](`puzzle_widget.checker.PuzzleResult`)]{.parameter-annotation}</code>
+
+:   

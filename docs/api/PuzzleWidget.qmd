@@ -1,0 +1,27 @@
+# PuzzleWidget { #puzzle_widget.PuzzleWidget }
+
+```python
+puzzle_widget.PuzzleWidget(lines, expected)
+```
+
+A reorderable list of code lines that checks itself against an expected result.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+<code>[**lines**]{.parameter-name} [:]{.parameter-annotation-sep} [list of str]{.parameter-annotation}</code>
+
+:   The puzzle's lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement -- no multi-line ``if``/``for``/``def``/... blocks, since those can't survive an arbitrary reordering (see ``puzzle_widget.checker``).
+
+<code>[**expected**]{.parameter-name} [:]{.parameter-annotation-sep} [[object](`object`)]{.parameter-annotation}</code>
+
+:   The value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line (a bare expression, or a single-name assignment's target) -- see ``puzzle_widget.checker.run_puzzle``.
+
+## Attributes {.doc-section .doc-section-attributes}
+
+<code>[**success**]{.parameter-name} [:]{.parameter-annotation-sep} [[bool](`bool`)]{.parameter-annotation}</code>
+
+:   Whether the current order is correct. Recomputed automatically whenever ``lines`` changes (i.e. after every drag/keyboard reorder).
+
+<code>[**last_error**]{.parameter-name} [:]{.parameter-annotation-sep} [[str](`str`) or None]{.parameter-annotation}</code>
+
+:   A short description of the exception raised by the current order, if any -- expected and routine while the student is still arranging a scrambled puzzle, not shown in the widget UI itself.
