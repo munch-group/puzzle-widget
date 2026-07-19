@@ -237,8 +237,10 @@ class PuzzleWidget(anywidget.AnyWidget):
         survive an arbitrary reordering (see ``puzzle_widget.checker``).
     expected : object
         The value the lines should produce, in the correct order, to count
-        as solved. Compared against the value of the last line (a bare
-        expression, or a single-name assignment's target) -- see
+        as solved. Compared against the value of the last line, which must
+        be a bare expression (e.g. a variable's name on its own line) --
+        an assignment produces no comparable value, exactly as it produces
+        no cell output in a real notebook -- see
         ``puzzle_widget.checker.run_puzzle``.
 
     Attributes

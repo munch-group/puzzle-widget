@@ -46,9 +46,11 @@ pip install puzzle-widget
   puzzle can't contain multi-line blocks (`if`/`for`/`def`/...) that need to
   stay attached to each other, since any permutation of the lines has to at
   least *parse* -- only the values it produces should depend on the order.
-- The result is the value of the **last line**: either a bare expression
-  (`a + b`) or a simple assignment (`total = a + b`), read back from the
-  namespace afterward.
+- The result is the value of the **last line**, which must be a bare
+  expression (`a + b`, or a variable's name on its own) -- exactly like a
+  notebook cell only shows output for a trailing expression, not for an
+  assignment. If the puzzle's final step is `total = a + b`, add a `total`
+  line after it so there's a value to check.
 
 You can also build a widget directly from a list of lines:
 

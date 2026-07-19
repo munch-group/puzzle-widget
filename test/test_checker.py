@@ -23,14 +23,25 @@ def test_correct_lines_but_wrong_expected_value():
     assert result.error is None
 
 
-def test_last_line_simple_assignment_is_the_result():
+def test_last_line_simple_assignment_is_not_the_result():
+    # An assignment produces no "cell output" in a real notebook either --
+    # `expected` must match a bare trailing expression, not an assignment's
+    # target, even though the assignment itself still runs.
     result = run_puzzle(["a = 10", "b = 5", "total = a + b"], 15)
-    assert result.success is True
-    assert result.value == 15
+    assert result.success is False
+    assert result.value is None
+    assert result.error is None
 
 
-def test_last_line_augmented_assignment_is_the_result():
+def test_last_line_augmented_assignment_is_not_the_result():
     result = run_puzzle(["x = 10", "x += 5"], 15)
+    assert result.success is False
+    assert result.value is None
+    assert result.error is None
+
+
+def test_bare_expression_after_assignment_is_the_result():
+    result = run_puzzle(["a = 10", "b = 5", "total = a + b", "total"], 15)
     assert result.success is True
     assert result.value == 15
 

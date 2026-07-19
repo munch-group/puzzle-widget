@@ -51,15 +51,19 @@ class PuzzleResult:
 
 def _last_line_value(tree, namespace):
     """Run every statement in ``tree`` except the last, then return the
-    result associated with the last one:
+    result associated with the last one -- mirroring how a Jupyter cell only
+    ever displays an *output* for a bare trailing expression, never for a
+    statement like an assignment:
 
     - if it's a bare expression (``ast.Expr``), the expression's value
       (mirroring what a REPL/notebook would display for it);
-    - if it's a simple assignment/augmented assignment to a single name
-      (``x = ...`` / ``x += ...``), the value bound to that name afterward;
-    - otherwise (e.g. the puzzle's last line has some other statement shape),
-      ``None`` -- authors should end puzzles with an expression or a
-      single-name assignment so there is a value to check.
+    - otherwise (e.g. an assignment), the line is still executed -- so a
+      runtime error there is still caught by ``run_puzzle`` -- but there is
+      no "cell output" to compare against `expected`, so this returns
+      ``None``. Authors who want a variable's value checked should end the
+      puzzle with that variable's bare name on its own line, exactly as
+      they'd need a trailing bare expression to see it printed in a real
+      notebook cell.
     """
     if not tree.body:
         return None
@@ -69,10 +73,6 @@ def _last_line_value(tree, namespace):
     if isinstance(last, ast.Expr):
         return eval(compile(ast.Expression(body=last.value), "<puzzle>", "eval"), namespace)
     exec(compile(ast.Module(body=[last], type_ignores=[]), "<puzzle>", "exec"), namespace)
-    if isinstance(last, ast.Assign) and len(last.targets) == 1 and isinstance(last.targets[0], ast.Name):
-        return namespace.get(last.targets[0].id)
-    if isinstance(last, ast.AugAssign) and isinstance(last.target, ast.Name):
-        return namespace.get(last.target.id)
     return None
 
 

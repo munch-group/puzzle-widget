@@ -14,7 +14,7 @@ A reorderable list of code lines that checks itself against an expected result.
 
 <code>[**expected**]{.parameter-name} [:]{.parameter-annotation-sep} [[object](`object`)]{.parameter-annotation}</code>
 
-:   The value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line (a bare expression, or a single-name assignment's target) -- see ``puzzle_widget.checker.run_puzzle``.
+:   The value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable's name on its own line) -- an assignment produces no comparable value, exactly as it produces no cell output in a real notebook -- see ``puzzle_widget.checker.run_puzzle``.
 
 ## Attributes {.doc-section .doc-section-attributes}
 

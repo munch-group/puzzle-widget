@@ -28,8 +28,10 @@ The package is `puzzle_widget` under `src/`:
 - `src/puzzle_widget/checker.py` -- the pure engine. `run_puzzle(lines,
   expected)` joins `lines` with newlines, `ast.parse`s them, execs every
   statement but the last in a **fresh, empty namespace**, then reads "the
-  result" off the last one: a bare expression's value, or (for a simple
-  `x = ...`/`x += ...`) the value bound to `x` afterward. Returns a
+  result" off the last one: a bare expression's value, mirroring the one
+  case a real notebook cell shows output for -- an assignment as the last
+  line still runs (so a runtime error there is still caught) but produces no
+  comparable value, same as it produces no cell output for real. Returns a
   `PuzzleResult(success, value, error)` -- it never raises; a `SyntaxError`
   or any runtime exception from a still-scrambled order is caught and
   reported via `.error` with `success=False`, since that's the *expected*
@@ -134,10 +136,15 @@ Hand-rolled vanilla JS, no external/CDN dependencies (same convention as
   "fix" this by trying to make more orderings succeed or by surfacing
   `last_error` in the UI -- a constant stream of tracebacks for what is
   expected, frequent, transient state would be worse UX, not better.
-- **The last line determines "the result".** If it isn't a bare expression
-  or a single-name (augmented) assignment, `run_puzzle` returns `value=None`
-  with no error -- there's nothing wrong, there's just nothing to compare.
-  Puzzle authors should end every puzzle with one of those two shapes.
+- **The last line determines "the result" only if it's a bare expression.**
+  Exactly like a real notebook cell only shows output for a trailing bare
+  expression, `run_puzzle` only reads a comparable value off a last line
+  that's a bare expression (e.g. `x`); an assignment (`x = 44`, `x += 1`)
+  still runs -- so a bug there still surfaces as an exception -- but
+  `run_puzzle` returns `value=None` with no error, which can never equal
+  `expected`. Puzzle authors should end every puzzle with the final
+  variable's bare name on its own line, not an assignment to it -- see
+  `test_last_line_simple_assignment_is_not_the_result` in `test_checker.py`.
 - **Equality is exact (`==`).** No floating-point tolerance is built in;
   pick puzzles whose correct order produces an exactly-comparable value
   (ints, strings, exact-valued floats, lists/tuples/dicts of the same) if
@@ -192,7 +199,8 @@ version tag pushes (`vX.Y[.Z][.rcN]`):
 
 - `checker.run_puzzle` is fully headless-testable (pure stdlib `ast`, no
   `anywidget`/IPython): correct order, scrambled order (routine exception),
-  wrong value, last-line-as-assignment, augmented assignment, string/list
+  wrong value, last-line-as-(augmented)-assignment *not* counting as a
+  result, a bare expression after such an assignment does, string/list
   results, an unparseable order, and namespace isolation across calls.
 - `PuzzleWidget` is tested by constructing it directly (bypassing IPython
   entirely) and then **setting `.lines`** to simulate a reorder -- that's
