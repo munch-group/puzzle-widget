@@ -1,35 +1,42 @@
 [
   {
-    "objectID": "pages/example.html",
-    "href": "pages/example.html",
-    "title": "Examples",
+    "objectID": "pages/overview.html",
+    "href": "pages/overview.html",
+    "title": "Overview",
     "section": "",
-    "text": "A couple more puzzles, one straight-line and one using a string method.\nimport puzzle_widget",
+    "text": "puzzle-widget is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell %%puzzle &lt;result&gt;; every line below it becomes a draggable row. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces &lt;result&gt;.",
     "crumbs": [
-      "Examples",
-      "Examples"
+      "Overview"
     ]
   },
   {
-    "objectID": "pages/example.html#a-slightly-longer-chain",
-    "href": "pages/example.html#a-slightly-longer-chain",
-    "title": "Examples",
-    "section": "A slightly longer chain",
-    "text": "A slightly longer chain\n\n%%puzzle 44\ntotal = total + z\nz = 2\ntotal = x * y\ny = 6\nx = 7",
+    "objectID": "pages/overview.html#installation",
+    "href": "pages/overview.html#installation",
+    "title": "Overview",
+    "section": "Installation",
+    "text": "Installation\n\npixicondapip\n\n\npixi workspace channel add munch-group\npixi add puzzle-widget\n\n\nconda install -c munch-group puzzle-widget\n\n\npip install puzzle-widget\n\n\n\n\nimport puzzle_widget  # registers the %%puzzle cell magic\n\nBelow, the three lines are scrambled – a + b comes first, so running them in this order raises a NameError (a isn’t defined yet). Drag a = 10 and b = 5 above a + b (or focus a row and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces 15.\n\n%%puzzle 15\na + b\nb = 5\na = 10",
     "crumbs": [
-      "Examples",
-      "Examples"
+      "Overview"
     ]
   },
   {
-    "objectID": "pages/example.html#string-methods",
-    "href": "pages/example.html#string-methods",
-    "title": "Examples",
-    "section": "String methods",
-    "text": "String methods\n\n%%puzzle 'HELLO, WORLD'\ngreeting.upper()\ngreeting = 'hello, ' + name\nname = 'world'",
+    "objectID": "pages/overview.html#how-it-works",
+    "href": "pages/overview.html#how-it-works",
+    "title": "Overview",
+    "section": "How it works",
+    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line (a bare expression, or a simple assignment’s target); the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
     "crumbs": [
-      "Examples",
-      "Examples"
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "pages/overview.html#learning-more",
+    "href": "pages/overview.html#learning-more",
+    "title": "Overview",
+    "section": "Learning more",
+    "text": "Learning more\nSee the Examples page for a couple more puzzles.",
+    "crumbs": [
+      "Overview"
     ]
   },
   {
@@ -96,17 +103,6 @@
     ]
   },
   {
-    "objectID": "api/widget.register_puzzle_magic.html",
-    "href": "api/widget.register_puzzle_magic.html",
-    "title": "widget.register_puzzle_magic",
-    "section": "",
-    "text": "widget.register_puzzle_magic\npuzzle_widget.widget.register_puzzle_magic(ipython=None)\nRegister the %%puzzle cell magic.\nIn IPython/Jupyter, %%puzzle &lt;result&gt; turns the cell’s lines into a reorderable PuzzleWidget that checks itself against &lt;result&gt; (a Python literal) after every reorder::\n%%puzzle 15\na + b\nb = 5\na = 10\n&lt;result&gt; must be a literal (number, string, list, …) parsed with ast.literal_eval – not an arbitrary expression, since the puzzle runs in its own isolated namespace rather than the notebook’s, so a variable reference wouldn’t resolve to anything meaningful. Blank lines in the cell are dropped and each remaining line is stripped of surrounding whitespace before becoming a draggable row.\nCalled automatically on import; returns True when a live shell is found, False otherwise (e.g. plain Python).",
-    "crumbs": [
-      "Widget",
-      "widget.register_puzzle_magic"
-    ]
-  },
-  {
     "objectID": "api/PuzzleWidget.html",
     "href": "api/PuzzleWidget.html",
     "title": "PuzzleWidget",
@@ -140,43 +136,47 @@
     ]
   },
   {
-    "objectID": "pages/overview.html",
-    "href": "pages/overview.html",
-    "title": "Overview",
+    "objectID": "api/widget.register_puzzle_magic.html",
+    "href": "api/widget.register_puzzle_magic.html",
+    "title": "widget.register_puzzle_magic",
     "section": "",
-    "text": "puzzle-widget is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell %%puzzle &lt;result&gt;; every line below it becomes a draggable row. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces &lt;result&gt;.",
+    "text": "widget.register_puzzle_magic\npuzzle_widget.widget.register_puzzle_magic(ipython=None)\nRegister the %%puzzle cell magic.\nIn IPython/Jupyter, %%puzzle &lt;result&gt; turns the cell’s lines into a reorderable PuzzleWidget that checks itself against &lt;result&gt; (a Python literal) after every reorder::\n%%puzzle 15\na + b\nb = 5\na = 10\n&lt;result&gt; must be a literal (number, string, list, …) parsed with ast.literal_eval – not an arbitrary expression, since the puzzle runs in its own isolated namespace rather than the notebook’s, so a variable reference wouldn’t resolve to anything meaningful. Blank lines in the cell are dropped and each remaining line is stripped of surrounding whitespace before becoming a draggable row.\nCalled automatically on import; returns True when a live shell is found, False otherwise (e.g. plain Python).",
     "crumbs": [
-      "Overview"
+      "Widget",
+      "widget.register_puzzle_magic"
     ]
   },
   {
-    "objectID": "pages/overview.html#installation",
-    "href": "pages/overview.html#installation",
-    "title": "Overview",
-    "section": "Installation",
-    "text": "Installation\n\npixicondapip\n\n\npixi workspace channel add munch-group\npixi add puzzle-widget\n\n\nconda install -c munch-group puzzle-widget\n\n\npip install puzzle-widget\n\n\n\n\nimport puzzle_widget  # registers the %%puzzle cell magic\n\nBelow, the three lines are scrambled – a + b comes first, so running them in this order raises a NameError (a isn’t defined yet). Drag a = 10 and b = 5 above a + b (or focus a row and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces 15.\n\n%%puzzle 15\na + b\nb = 5\na = 10",
+    "objectID": "pages/example.html",
+    "href": "pages/example.html",
+    "title": "Examples",
+    "section": "",
+    "text": "A couple more puzzles, one straight-line and one using a string method.\nimport puzzle_widget",
     "crumbs": [
-      "Overview"
+      "Examples",
+      "Examples"
     ]
   },
   {
-    "objectID": "pages/overview.html#how-it-works",
-    "href": "pages/overview.html#how-it-works",
-    "title": "Overview",
-    "section": "How it works",
-    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line (a bare expression, or a simple assignment’s target); the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
+    "objectID": "pages/example.html#a-slightly-longer-chain",
+    "href": "pages/example.html#a-slightly-longer-chain",
+    "title": "Examples",
+    "section": "A slightly longer chain",
+    "text": "A slightly longer chain\n\n%%puzzle 44\ntotal = total + z\nz = 2\ntotal = x * y\ny = 6\nx = 7",
     "crumbs": [
-      "Overview"
+      "Examples",
+      "Examples"
     ]
   },
   {
-    "objectID": "pages/overview.html#learning-more",
-    "href": "pages/overview.html#learning-more",
-    "title": "Overview",
-    "section": "Learning more",
-    "text": "Learning more\nSee the Examples page for a couple more puzzles.",
+    "objectID": "pages/example.html#string-methods",
+    "href": "pages/example.html#string-methods",
+    "title": "Examples",
+    "section": "String methods",
+    "text": "String methods\n\n%%puzzle 'HELLO, WORLD'\ngreeting.upper()\ngreeting = 'hello, ' + name\nname = 'world'",
     "crumbs": [
-      "Overview"
+      "Examples",
+      "Examples"
     ]
   }
 ]
