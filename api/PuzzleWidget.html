@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </dd>
 <dt><code><span class="parameter-name"><strong>expected</strong></span> <span class="parameter-annotation-sep">:</span> <span class="parameter-annotation"><code>object</code></span></code></dt>
 <dd>
-<p>The value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line (a bare expression, or a single-name assignment’s target) – see <code>puzzle_widget.checker.run_puzzle</code>.</p>
+<p>The value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g.&nbsp;a variable’s name on its own line) – an assignment produces no comparable value, exactly as it produces no cell output in a real notebook – see <code>puzzle_widget.checker.run_puzzle</code>.</p>
 </dd>
 </dl>
 </section>

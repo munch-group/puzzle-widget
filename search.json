@@ -24,7 +24,7 @@
     "href": "pages/overview.html#how-it-works",
     "title": "Overview",
     "section": "How it works",
-    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line (a bare expression, or a simple assignment’s target); the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
+    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line – which must be a bare expression, exactly like a notebook cell only shows output for a trailing expression, never for an assignment; the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
     "crumbs": [
       "Overview"
     ]
@@ -107,7 +107,7 @@
     "href": "api/PuzzleWidget.html",
     "title": "PuzzleWidget",
     "section": "",
-    "text": "puzzle_widget.PuzzleWidget(lines, expected)\nA reorderable list of code lines that checks itself against an expected result.\n\n\n\nlines : list of str\n\nThe puzzle’s lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line (a bare expression, or a single-name assignment’s target) – see puzzle_widget.checker.run_puzzle.\n\n\n\n\n\n\nsuccess : bool\n\nWhether the current order is correct. Recomputed automatically whenever lines changes (i.e. after every drag/keyboard reorder).\n\nlast_error : str or None\n\nA short description of the exception raised by the current order, if any – expected and routine while the student is still arranging a scrambled puzzle, not shown in the widget UI itself.",
+    "text": "puzzle_widget.PuzzleWidget(lines, expected)\nA reorderable list of code lines that checks itself against an expected result.\n\n\n\nlines : list of str\n\nThe puzzle’s lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable’s name on its own line) – an assignment produces no comparable value, exactly as it produces no cell output in a real notebook – see puzzle_widget.checker.run_puzzle.\n\n\n\n\n\n\nsuccess : bool\n\nWhether the current order is correct. Recomputed automatically whenever lines changes (i.e. after every drag/keyboard reorder).\n\nlast_error : str or None\n\nA short description of the exception raised by the current order, if any – expected and routine while the student is still arranging a scrambled puzzle, not shown in the widget UI itself.",
     "crumbs": [
       "Widget",
       "PuzzleWidget"
@@ -118,7 +118,7 @@
     "href": "api/PuzzleWidget.html#parameters",
     "title": "PuzzleWidget",
     "section": "",
-    "text": "lines : list of str\n\nThe puzzle’s lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line (a bare expression, or a single-name assignment’s target) – see puzzle_widget.checker.run_puzzle.",
+    "text": "lines : list of str\n\nThe puzzle’s lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable’s name on its own line) – an assignment produces no comparable value, exactly as it produces no cell output in a real notebook – see puzzle_widget.checker.run_puzzle.",
     "crumbs": [
       "Widget",
       "PuzzleWidget"
@@ -162,7 +162,7 @@
     "href": "pages/example.html#a-slightly-longer-chain",
     "title": "Examples",
     "section": "A slightly longer chain",
-    "text": "A slightly longer chain\n\n%%puzzle 44\ntotal = total + z\nz = 2\ntotal = x * y\ny = 6\nx = 7",
+    "text": "A slightly longer chain\n\n%%puzzle 44\ntotal = total + z\nz = 2\ntotal = x * y\ntotal\ny = 6\nx = 7",
     "crumbs": [
       "Examples",
       "Examples"
