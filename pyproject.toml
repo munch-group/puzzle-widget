@@ -60,10 +60,21 @@ nodejs = ">=20,<23"
 git = "*"
 gh = "*"
 ipython = "*"
+# Required by scripts/git-commit.sh: nbdime for semantic notebook diffs
+# (hard-required, script exits if missing), jq for parsing the Anthropic
+# API response used to draft commit messages. jq has no conda-forge build for
+# win-64, so it's declared per-target below instead of here.
+nbdime = "*"
 anywidget = ">=0.11.0,<0.12"
 
 # [tool.pixi.pypi-dependencies]
 # puzzle-widget = { path = ".", editable = true }
+
+[tool.pixi.target.osx-arm64.dependencies]
+jq = "*"
+
+[tool.pixi.target.linux-64.dependencies]
+jq = "*"
 
 [tool.pixi.environments]
 default = {solve-group = "default"}
