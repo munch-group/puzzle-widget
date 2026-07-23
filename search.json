@@ -1,72 +1,46 @@
 [
   {
-    "objectID": "pages/overview.html",
-    "href": "pages/overview.html",
-    "title": "Overview",
+    "objectID": "pages/example.html",
+    "href": "pages/example.html",
+    "title": "Examples",
     "section": "",
-    "text": "puzzle-widget is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell %%puzzle &lt;result&gt;; every line below it becomes a draggable row. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces &lt;result&gt;.",
+    "text": "A couple more puzzles, one straight-line and one using a string method.\nimport puzzle_widget",
     "crumbs": [
-      "Overview"
+      "Examples",
+      "Examples"
     ]
   },
   {
-    "objectID": "pages/overview.html#installation",
-    "href": "pages/overview.html#installation",
-    "title": "Overview",
-    "section": "Installation",
-    "text": "Installation\n\npixicondapip\n\n\npixi workspace channel add munch-group\npixi add puzzle-widget\n\n\nconda install -c munch-group puzzle-widget\n\n\npip install puzzle-widget\n\n\n\n\nimport puzzle_widget  # registers the %%puzzle cell magic\n\nBelow, the three lines are scrambled – a + b comes first, so running them in this order raises a NameError (a isn’t defined yet). Drag a = 10 and b = 5 above a + b (or focus a row and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces 15.\n\n%%puzzle 15\na + b\nb = 5\na = 10",
+    "objectID": "pages/example.html#a-slightly-longer-chain",
+    "href": "pages/example.html#a-slightly-longer-chain",
+    "title": "Examples",
+    "section": "A slightly longer chain",
+    "text": "A slightly longer chain\n\n%%puzzle 44\ntotal = total + z\nz = 2\ntotal = x * y\ntotal\ny = 6\nx = 7",
     "crumbs": [
-      "Overview"
+      "Examples",
+      "Examples"
     ]
   },
   {
-    "objectID": "pages/overview.html#how-it-works",
-    "href": "pages/overview.html#how-it-works",
-    "title": "Overview",
-    "section": "How it works",
-    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line – which must be a bare expression, exactly like a notebook cell only shows output for a trailing expression, never for an assignment; the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
+    "objectID": "pages/example.html#string-methods",
+    "href": "pages/example.html#string-methods",
+    "title": "Examples",
+    "section": "String methods",
+    "text": "String methods\n\n%%puzzle 'HELLO, WORLD'\ngreeting.upper()\ngreeting = 'hello, ' + name\nname = 'world'",
     "crumbs": [
-      "Overview"
+      "Examples",
+      "Examples"
     ]
   },
   {
-    "objectID": "pages/overview.html#learning-more",
-    "href": "pages/overview.html#learning-more",
-    "title": "Overview",
-    "section": "Learning more",
-    "text": "Learning more\nSee the Examples page for a couple more puzzles.",
-    "crumbs": [
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "api/index.html",
-    "href": "api/index.html",
-    "title": "Function reference",
+    "objectID": "api/widget.register_puzzle_magic.html",
+    "href": "api/widget.register_puzzle_magic.html",
+    "title": "widget.register_puzzle_magic",
     "section": "",
-    "text": "The reorderable puzzle widget and the %%puzzle cell magic.\n\n\n\nPuzzleWidget\nA reorderable list of code lines that checks itself against an expected result.\n\n\nwidget.register_puzzle_magic\nRegister the %%puzzle cell magic.\n\n\n\n\n\n\nThe pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and",
+    "text": "widget.register_puzzle_magic\npuzzle_widget.widget.register_puzzle_magic(ipython=None)\nRegister the %%puzzle cell magic.\nIn IPython/Jupyter, %%puzzle &lt;result&gt; turns the cell’s lines into a reorderable PuzzleWidget that checks itself against &lt;result&gt; (a Python literal) after every reorder::\n%%puzzle 15\na + b\nb = 5\na = 10\n&lt;result&gt; must be a literal (number, string, list, …) parsed with ast.literal_eval – not an arbitrary expression, since the puzzle runs in its own isolated namespace rather than the notebook’s, so a variable reference wouldn’t resolve to anything meaningful. Blank lines in the cell are dropped and each remaining line is stripped of surrounding whitespace before becoming a draggable row.\nCalled automatically on import; returns True when a live shell is found, False otherwise (e.g. plain Python).",
     "crumbs": [
-      "Function reference"
-    ]
-  },
-  {
-    "objectID": "api/index.html#widget",
-    "href": "api/index.html#widget",
-    "title": "Function reference",
-    "section": "",
-    "text": "The reorderable puzzle widget and the %%puzzle cell magic.\n\n\n\nPuzzleWidget\nA reorderable list of code lines that checks itself against an expected result.\n\n\nwidget.register_puzzle_magic\nRegister the %%puzzle cell magic.",
-    "crumbs": [
-      "Function reference"
-    ]
-  },
-  {
-    "objectID": "api/index.html#checker",
-    "href": "api/index.html#checker",
-    "title": "Function reference",
-    "section": "",
-    "text": "The pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and",
-    "crumbs": [
-      "Function reference"
+      "Widget",
+      "widget.register_puzzle_magic"
     ]
   },
   {
@@ -136,47 +110,73 @@
     ]
   },
   {
-    "objectID": "api/widget.register_puzzle_magic.html",
-    "href": "api/widget.register_puzzle_magic.html",
-    "title": "widget.register_puzzle_magic",
+    "objectID": "api/index.html",
+    "href": "api/index.html",
+    "title": "Function reference",
     "section": "",
-    "text": "widget.register_puzzle_magic\npuzzle_widget.widget.register_puzzle_magic(ipython=None)\nRegister the %%puzzle cell magic.\nIn IPython/Jupyter, %%puzzle &lt;result&gt; turns the cell’s lines into a reorderable PuzzleWidget that checks itself against &lt;result&gt; (a Python literal) after every reorder::\n%%puzzle 15\na + b\nb = 5\na = 10\n&lt;result&gt; must be a literal (number, string, list, …) parsed with ast.literal_eval – not an arbitrary expression, since the puzzle runs in its own isolated namespace rather than the notebook’s, so a variable reference wouldn’t resolve to anything meaningful. Blank lines in the cell are dropped and each remaining line is stripped of surrounding whitespace before becoming a draggable row.\nCalled automatically on import; returns True when a live shell is found, False otherwise (e.g. plain Python).",
+    "text": "The reorderable puzzle widget and the %%puzzle cell magic.\n\n\n\nPuzzleWidget\nA reorderable list of code lines that checks itself against an expected result.\n\n\nwidget.register_puzzle_magic\nRegister the %%puzzle cell magic.\n\n\n\n\n\n\nThe pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and",
     "crumbs": [
-      "Widget",
-      "widget.register_puzzle_magic"
+      "Function reference"
     ]
   },
   {
-    "objectID": "pages/example.html",
-    "href": "pages/example.html",
-    "title": "Examples",
+    "objectID": "api/index.html#widget",
+    "href": "api/index.html#widget",
+    "title": "Function reference",
     "section": "",
-    "text": "A couple more puzzles, one straight-line and one using a string method.\nimport puzzle_widget",
+    "text": "The reorderable puzzle widget and the %%puzzle cell magic.\n\n\n\nPuzzleWidget\nA reorderable list of code lines that checks itself against an expected result.\n\n\nwidget.register_puzzle_magic\nRegister the %%puzzle cell magic.",
     "crumbs": [
-      "Examples",
-      "Examples"
+      "Function reference"
     ]
   },
   {
-    "objectID": "pages/example.html#a-slightly-longer-chain",
-    "href": "pages/example.html#a-slightly-longer-chain",
-    "title": "Examples",
-    "section": "A slightly longer chain",
-    "text": "A slightly longer chain\n\n%%puzzle 44\ntotal = total + z\nz = 2\ntotal = x * y\ntotal\ny = 6\nx = 7",
+    "objectID": "api/index.html#checker",
+    "href": "api/index.html#checker",
+    "title": "Function reference",
+    "section": "",
+    "text": "The pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and",
     "crumbs": [
-      "Examples",
-      "Examples"
+      "Function reference"
     ]
   },
   {
-    "objectID": "pages/example.html#string-methods",
-    "href": "pages/example.html#string-methods",
-    "title": "Examples",
-    "section": "String methods",
-    "text": "String methods\n\n%%puzzle 'HELLO, WORLD'\ngreeting.upper()\ngreeting = 'hello, ' + name\nname = 'world'",
+    "objectID": "pages/overview.html",
+    "href": "pages/overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "puzzle-widget is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell %%puzzle &lt;result&gt;; every line below it becomes a draggable row. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces &lt;result&gt;.",
     "crumbs": [
-      "Examples",
-      "Examples"
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "pages/overview.html#installation",
+    "href": "pages/overview.html#installation",
+    "title": "Overview",
+    "section": "Installation",
+    "text": "Installation\n\npixicondapip\n\n\npixi workspace channel add munch-group\npixi add puzzle-widget\n\n\nconda install -c munch-group puzzle-widget\n\n\npip install puzzle-widget\n\n\n\n\nimport puzzle_widget  # registers the %%puzzle cell magic\n\nBelow, the three lines are scrambled – a + b comes first, so running them in this order raises a NameError (a isn’t defined yet). Drag a = 10 and b = 5 above a + b (or focus a row and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces 15.\n\n%%puzzle 15\na + b\nb = 5\na = 10",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "pages/overview.html#how-it-works",
+    "href": "pages/overview.html#how-it-works",
+    "title": "Overview",
+    "section": "How it works",
+    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line – which must be a bare expression, exactly like a notebook cell only shows output for a trailing expression, never for an assignment; the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
+    "crumbs": [
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "pages/overview.html#learning-more",
+    "href": "pages/overview.html#learning-more",
+    "title": "Overview",
+    "section": "Learning more",
+    "text": "Learning more\nSee the Examples page for a couple more puzzles.",
+    "crumbs": [
+      "Overview"
     ]
   }
 ]
