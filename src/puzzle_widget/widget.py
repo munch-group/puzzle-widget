@@ -201,7 +201,7 @@ export default { render };
 _CSS = r"""
 /* Styles for the DOM built in _ESM's render(): .pz-root > .pz-goal, .pz-list
    (draggable .pz-row items), .pz-status. */
-.pz-root { display: flex; flex-direction: column; gap: 10px;
+.pz-root { display: flex; flex-direction: column; gap: 10px; margin-top: 8px;
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif; max-width: 520px; }
 .pz-goal { font-size: 13px; color: #4a4a55; }
 .pz-goal code { font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, monospace;
