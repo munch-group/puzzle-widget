@@ -6,3 +6,4 @@ puzzle_widget.PuzzleWidget py:class 1 api/PuzzleWidget.html#puzzle_widget.Puzzle
 puzzle_widget.widget.PuzzleWidget py:class 1 api/PuzzleWidget.html#puzzle_widget.PuzzleWidget puzzle_widget.PuzzleWidget
 puzzle_widget.widget.register_puzzle_magic py:function 1 api/widget.register_puzzle_magic.html#puzzle_widget.widget.register_puzzle_magic -
 puzzle_widget.checker.run_puzzle py:function 1 api/checker.run_puzzle.html#puzzle_widget.checker.run_puzzle -
+puzzle_widget.checker.scramble_lines py:function 1 api/checker.scramble_lines.html#puzzle_widget.checker.scramble_lines -

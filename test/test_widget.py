@@ -4,22 +4,34 @@ Constructing ``PuzzleWidget`` directly (bypassing IPython/the magic entirely)
 is enough to drive it headlessly: setting ``.lines`` is exactly what the
 frontend does after a drag/keyboard reorder (``model.set("lines", ...);
 model.save_changes()``), which traitlets delivers to Python the same way
-either way.
+either way. Note that ``.lines`` right after construction is the *scramble*
+of the lines passed in, not those lines -- see ``scramble_lines``.
 """
 from puzzle_widget import PuzzleWidget
 from puzzle_widget.widget import register_puzzle_magic
 
 
-def test_initial_scrambled_order_is_not_solved():
-    w = PuzzleWidget(["a + b", "b = 5", "a = 10"], 15)
-    assert w.lines == ["a + b", "b = 5", "a = 10"]
-    assert w.success is False
-    assert w.last_error is not None  # NameError, expected while scrambled
+SOLVED = ["b = 5", "a = 10", "a + b"]
 
 
-def test_initial_order_already_correct_is_solved():
-    w = PuzzleWidget(["b = 5", "a = 10", "a + b"], 15)
-    assert w.success is True
+def test_lines_are_scrambled_and_not_solved_even_when_written_in_order():
+    w = PuzzleWidget(SOLVED, 15)
+    assert sorted(w.lines) == sorted(SOLVED)  # same lines...
+    assert w.lines != SOLVED  # ...but not the order they were written in
+    assert w.success is False  # and not an order that already solves it
+
+
+def test_scramble_is_deterministic_across_widgets():
+    a = PuzzleWidget(SOLVED, 15)
+    b = PuzzleWidget(SOLVED, 15)
+    assert a.lines == b.lines
+
+
+def test_a_different_seed_can_give_a_different_scramble():
+    default = PuzzleWidget(["a = 1", "b = 2", "c = 3", "d = 4", "a + b + c + d"], 10)
+    other = PuzzleWidget(["a = 1", "b = 2", "c = 3", "d = 4", "a + b + c + d"], 10, seed=1)
+    assert default.lines != other.lines
+    assert not default.success and not other.success
 
 
 def test_reordering_lines_rechecks_and_flips_success():

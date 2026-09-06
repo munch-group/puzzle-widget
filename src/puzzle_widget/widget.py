@@ -8,6 +8,10 @@ reorderable list. The widget re-runs the current order after every reorder
 (``puzzle_widget.checker.run_puzzle``) and shows whether it produces
 ``<result>``.
 
+* The lines are scrambled *by the widget* (``checker.scramble_lines``, fixed
+  seed), so an author can write them in the correct order and the student
+  still gets a puzzle -- the starting order is never the written one, and
+  never one that already solves it.
 * Built on `anywidget` (the standard ipywidgets comm protocol + plain ESM), so it
   behaves the same across VS Code notebooks, JupyterLab, Notebook 7 and Colab.
 * The frontend only reports the user's current line order; Python owns all
@@ -18,9 +22,9 @@ Usage
     import puzzle_widget  # registers the %%puzzle cell magic
 
     %%puzzle 15
-    a + b
-    b = 5
     a = 10
+    b = 5
+    a + b
 
 Or construct the widget directly from a list of lines::
 
@@ -36,7 +40,7 @@ import ast
 import anywidget
 import traitlets
 
-from .checker import run_puzzle
+from .checker import DEFAULT_SEED, run_puzzle, scramble_lines
 
 try:  # IPython is present whenever a kernel is running, but guard anyway.
     from IPython import get_ipython
@@ -231,10 +235,13 @@ class PuzzleWidget(anywidget.AnyWidget):
     Parameters
     ----------
     lines : list of str
-        The puzzle's lines in their initial (typically scrambled) order.
-        Each must be a complete, independent, non-indented statement -- no
-        multi-line ``if``/``for``/``def``/... blocks, since those can't
-        survive an arbitrary reordering (see ``puzzle_widget.checker``).
+        The puzzle's lines, in any order -- the widget scrambles them
+        itself (see ``puzzle_widget.checker.scramble_lines``), so the
+        student never starts from the order they were written in, nor from
+        one that already solves the puzzle. Each must be a complete,
+        independent, non-indented statement -- no multi-line
+        ``if``/``for``/``def``/... blocks, since those can't survive an
+        arbitrary reordering (see ``puzzle_widget.checker``).
     expected : object
         The value the lines should produce, in the correct order, to count
         as solved. Compared against the value of the last line, which must
@@ -242,9 +249,16 @@ class PuzzleWidget(anywidget.AnyWidget):
         an assignment produces no comparable value, exactly as it produces
         no cell output in a real notebook -- see
         ``puzzle_widget.checker.run_puzzle``.
+    seed : int, optional
+        Seed for the initial scramble. The default makes a given puzzle
+        always start in the same scrambled order, so every student sees the
+        same one and a puzzle's starting state is reproducible.
 
     Attributes
     ----------
+    lines : list of str
+        The current order, starting from the scramble of the ``lines``
+        argument rather than the argument itself.
     success : bool
         Whether the current order is correct. Recomputed automatically
         whenever ``lines`` changes (i.e. after every drag/keyboard reorder).
@@ -261,12 +275,12 @@ class PuzzleWidget(anywidget.AnyWidget):
     expected_repr = traitlets.Unicode().tag(sync=True)
     success = traitlets.Bool(False).tag(sync=True)
 
-    def __init__(self, lines, expected):
+    def __init__(self, lines, expected, seed=DEFAULT_SEED):
         super().__init__()
         self._expected = expected
         self.expected_repr = repr(expected)
         self.last_error = None
-        self.lines = list(lines)
+        self.lines = scramble_lines(lines, expected, seed=seed)
         self._check()
 
     @traitlets.observe("lines")
@@ -284,12 +298,14 @@ def register_puzzle_magic(ipython=None):
 
     In IPython/Jupyter, `%%puzzle <result>` turns the cell's lines into a
     reorderable `PuzzleWidget` that checks itself against `<result>` (a
-    Python literal) after every reorder::
+    Python literal) after every reorder. The lines are scrambled by the
+    widget, so they can be written in whatever order reads best -- the
+    correct one included::
 
         %%puzzle 15
-        a + b
-        b = 5
         a = 10
+        b = 5
+        a + b
 
     `<result>` must be a literal (number, string, list, ...) parsed with
     `ast.literal_eval` -- not an arbitrary expression, since the puzzle runs
@@ -317,7 +333,7 @@ def register_puzzle_magic(ipython=None):
             return
         lines = [ln.strip() for ln in (cell or "").splitlines() if ln.strip()]
         if not lines:
-            print("%%puzzle: cell is empty -- put scrambled code lines below the magic line.")
+            print("%%puzzle: cell is empty -- put the puzzle's code lines below the magic line.")
             return
         _ipy_display(PuzzleWidget(lines, expected))
 

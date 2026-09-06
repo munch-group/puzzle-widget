@@ -4,10 +4,11 @@
 A Jupyter widget where students drag scrambled code lines into the correct
 order, built on [anywidget](https://anywidget.dev).
 
-Tag a cell `%%puzzle <result>`; every line below it becomes a draggable row.
-Drag (or focus a row and press the arrow keys) to reorder them -- the widget
-re-runs the current order after every move and shows a checkmark once it
-produces `<result>`.
+Tag a cell `%%puzzle <result>`; every line below it becomes a draggable row,
+**shuffled** so the student starts from a scrambled order. Drag (or focus a
+row and press the arrow keys) to reorder them -- the widget re-runs the
+current order after every move and shows a checkmark once it produces
+`<result>`.
 
 ```python
 import puzzle_widget  # registers the %%puzzle cell magic
@@ -15,13 +16,20 @@ import puzzle_widget  # registers the %%puzzle cell magic
 
 ```
 %%puzzle 15
-a + b
-b = 5
 a = 10
+b = 5
+a + b
 ```
 
-The student sees the three lines in that scrambled order; dragging `a = 10`
-and `b = 5` above `a + b` produces `15` and the widget shows "✓ Correct!".
+Write the lines in whatever order reads best -- the correct one included:
+the widget shuffles them before showing them, and never starts from an order
+that already produces `<result>`. Dragging them back into a working order
+produces `15` and the widget shows "✓ Correct!".
+
+The shuffle is seeded, so a given puzzle always starts in the same scrambled
+order -- every student sees the same starting point, and a puzzle you tested
+looks the same when you teach it. Pass `seed=` to `PuzzleWidget` for a
+different one.
 
 ## Installation
 
@@ -57,7 +65,7 @@ You can also build a widget directly from a list of lines:
 ```python
 from puzzle_widget import PuzzleWidget
 
-PuzzleWidget(["a + b", "b = 5", "a = 10"], expected=15)
+PuzzleWidget(["a = 10", "b = 5", "a + b"], expected=15)
 ```
 
 ## Documentation

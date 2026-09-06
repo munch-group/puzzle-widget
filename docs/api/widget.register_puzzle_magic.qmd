@@ -8,12 +8,14 @@ Register the `%%puzzle` cell magic.
 
 In IPython/Jupyter, `%%puzzle <result>` turns the cell's lines into a
 reorderable `PuzzleWidget` that checks itself against `<result>` (a
-Python literal) after every reorder::
+Python literal) after every reorder. The lines are scrambled by the
+widget, so they can be written in whatever order reads best -- the
+correct one included::
 
     %%puzzle 15
-    a + b
-    b = 5
     a = 10
+    b = 5
+    a + b
 
 `<result>` must be a literal (number, string, list, ...) parsed with
 `ast.literal_eval` -- not an arbitrary expression, since the puzzle runs

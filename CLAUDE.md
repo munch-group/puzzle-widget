@@ -7,10 +7,12 @@ scrambled code lines into the correct order, built on
 ## What this is
 
 Tag a cell `%%puzzle <result>` and its lines become a reorderable list below
-the cell: drag a row (or focus it and press the arrow keys) to move it up or
-down. After every reorder, the widget re-runs the current line order in an
-isolated namespace and checks whether it produces `<result>` -- showing a
-"✓ Correct!" banner once it does.
+the cell -- **shuffled**, so the student always starts from a scrambled
+order regardless of the order the author wrote them in: drag a row (or focus
+it and press the arrow keys) to move it up or down. After every reorder, the
+widget re-runs the current line order in an isolated namespace and checks
+whether it produces `<result>` -- showing a "✓ Correct!" banner once it
+does.
 
 The repo was scaffolded from the `munch-group` Python-library template (pixi
 environment, quartodoc docs, conda/PyPI release automation) -- the same
@@ -25,9 +27,11 @@ useful and easily unit-tested without any `anywidget`/IPython dependency.
 
 The package is `puzzle_widget` under `src/`:
 
-- `src/puzzle_widget/checker.py` -- the pure engine. `run_puzzle(lines,
-  expected)` joins `lines` with newlines, `ast.parse`s them, execs every
-  statement but the last in a **fresh, empty namespace**, then reads "the
+- `src/puzzle_widget/checker.py` -- the pure engine, two functions.
+  `scramble_lines(lines, expected, seed=DEFAULT_SEED)` produces the starting
+  order (see "Scrambling" below); `run_puzzle(lines, expected)` joins `lines`
+  with newlines, `ast.parse`s them, execs every statement but the last in a
+  **fresh, empty namespace**, then reads "the
   result" off the last one: a bare expression's value, mirroring the one
   case a real notebook cell shows output for -- an assignment as the last
   line still runs (so a runtime error there is still caught) but produces no
@@ -39,10 +43,11 @@ The package is `puzzle_widget` under `src/`:
   a bug to guard against upstream.
 - `src/puzzle_widget/widget.py` -- `PuzzleWidget` (the `anywidget.AnyWidget`)
   + the embedded `_ESM`/`_CSS` frontend strings + `register_puzzle_magic()`.
-  `PuzzleWidget.__init__` calls `_check()` once immediately (so the initial
-  scrambled order's state is correct before the widget ever renders); a
-  `@traitlets.observe("lines")` handler calls `_check()` again every time the
-  frontend commits a reorder.
+  `PuzzleWidget.__init__` sets `lines` to `scramble_lines(lines, expected,
+  seed=seed)` -- *not* to the lines it was handed -- and calls `_check()`
+  once immediately (so the initial scrambled order's state is correct before
+  the widget ever renders); a `@traitlets.observe("lines")` handler calls
+  `_check()` again every time the frontend commits a reorder.
 - `src/puzzle_widget/__init__.py` -- re-exports `PuzzleWidget`/
   `register_puzzle_magic` from `widget.py` (mirrors `turtle_widget`'s
   `from .widget import Turtle`). Importing `puzzle_widget` therefore both
@@ -77,6 +82,33 @@ each check is fully isolated from the notebook and from every other check.
 The consequence: puzzle code must be self-contained (no references to
 notebook-level variables), which is a reasonable constraint for this kind of
 short, self-contained exercise.
+
+### Scrambling (why it's in Python, at construction)
+
+The author's lines are shuffled by `scramble_lines` inside
+`PuzzleWidget.__init__`, so `self.lines` is the scramble from the very first
+sync -- the frontend receives an already-scrambled list and never shuffles
+anything itself. Doing it in Python (rather than in `_ESM`'s `draw()`) keeps
+one source of truth for "the current order": the frontend's `commit()`
+pushes DOM order to Python, and Python never has an order the frontend
+hasn't seen. It also means `success` is correct before the first render, and
+that the scramble is checkable headlessly.
+
+Two guarantees, both enforced by re-shuffling until they hold (bounded by
+`_MAX_SCRAMBLE_ATTEMPTS`): the starting order never equals the order passed
+in, and it never already solves the puzzle (verified with `run_puzzle`) --
+without the second, a lucky shuffle would hand the student a solved puzzle.
+Consequently a puzzle can be *written* in its correct order, which is what
+the README/docs examples now do; there's no reason for an author to scramble
+by hand.
+
+`DEFAULT_SEED = 7` (overridable via `PuzzleWidget(..., seed=...)`) makes the
+scramble deterministic: the same puzzle always starts the same way, so every
+student sees the same starting point and a puzzle behaves in class exactly
+as it did when the author tested it. Degenerate puzzles where no order can
+satisfy both guarantees (fewer than two lines, all lines identical, or every
+permutation solving) fall back to returning the input unchanged rather than
+raising -- there is nothing better to display.
 
 ### The "flat statement sequence" constraint
 
@@ -136,6 +168,9 @@ Hand-rolled vanilla JS, no external/CDN dependencies (same convention as
   "fix" this by trying to make more orderings succeed or by surfacing
   `last_error` in the UI -- a constant stream of tracebacks for what is
   expected, frequent, transient state would be worse UX, not better.
+- **`PuzzleWidget(lines, ...).lines` is not `lines`.** It's the scramble of
+  them, decided at construction. Tests and callers must treat the starting
+  order as "some permutation", never as the list they passed in.
 - **The last line determines "the result" only if it's a bare expression.**
   Exactly like a real notebook cell only shows output for a trailing bare
   expression, `run_puzzle` only reads a comparable value off a last line
@@ -166,7 +201,8 @@ Python `>=3.9,<3.14`. Key deps: `anywidget` (0.11.x), `traitlets`, `ipython`,
 - Dev install: `pixi run install-dev` (editable, no build isolation).
 - Run tests: `pixi run test` (== `pytest test/`).
 - Try the widget: open a notebook, `import puzzle_widget`, then
-  `%%puzzle 15` followed by scrambled lines in a cell.
+  `%%puzzle 15` followed by the puzzle's lines in a cell (any order -- the
+  widget scrambles them).
 - JS syntax check after editing the embedded frontend string:
   ```bash
   python -c "from puzzle_widget import widget as m; open('/tmp/e.mjs','w').write(m._ESM)"
@@ -197,13 +233,18 @@ version tag pushes (`vX.Y[.Z][.rcN]`):
 
 ## Testing approach
 
+- `checker.scramble_lines` is tested for its two guarantees (never the input
+  order, never an already-solved one) across every input permutation shape
+  it's given, plus determinism per seed and the degenerate fallbacks.
 - `checker.run_puzzle` is fully headless-testable (pure stdlib `ast`, no
   `anywidget`/IPython): correct order, scrambled order (routine exception),
   wrong value, last-line-as-(augmented)-assignment *not* counting as a
   result, a bare expression after such an assignment does, string/list
   results, an unparseable order, and namespace isolation across calls.
 - `PuzzleWidget` is tested by constructing it directly (bypassing IPython
-  entirely) and then **setting `.lines`** to simulate a reorder -- that's
+  entirely) -- note `.lines` right after construction is the *scramble* of
+  what was passed in, so tests assert on it as a permutation, not by
+  identity -- and then **setting `.lines`** to simulate a reorder -- that's
   exactly what the frontend's `commit()` does over the comm
   (`model.set("lines", ...); model.save_changes()`), and traitlets delivers
   it to `_lines_changed` the same way either way.

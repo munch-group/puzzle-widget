@@ -1,0 +1,38 @@
+# checker.scramble_lines { #puzzle_widget.checker.scramble_lines }
+
+```python
+puzzle_widget.checker.scramble_lines(lines, expected, seed=DEFAULT_SEED)
+```
+
+Return a shuffled copy of ``lines`` that does not already solve the puzzle.
+
+The lines an author writes are usually in (or near) the correct order,
+and a puzzle whose starting order is already solved -- or simply the
+order it was written in -- isn't a puzzle. This shuffles them with a
+fixed seed, so the scramble is random-looking but deterministic (the
+same puzzle always starts the same way), and rejects any candidate that
+
+- equals the order that was passed in, or
+- already produces ``expected`` (checked with ``run_puzzle``),
+
+reshuffling until one qualifies.
+
+## Parameters {.doc-section .doc-section-parameters}
+
+<code>[**lines**]{.parameter-name} [:]{.parameter-annotation-sep} [list of str]{.parameter-annotation}</code>
+
+:   The puzzle's lines, in any order.
+
+<code>[**expected**]{.parameter-name} [:]{.parameter-annotation-sep} [[object](`object`)]{.parameter-annotation}</code>
+
+:   The target value, used to reject an already-solved shuffle.
+
+<code>[**seed**]{.parameter-name} [:]{.parameter-annotation-sep} [[int](`int`)]{.parameter-annotation} [ = ]{.parameter-default-sep} [DEFAULT_SEED]{.parameter-default}</code>
+
+:   Seed for the shuffle. Defaults to ``DEFAULT_SEED`` (7), so the same puzzle always starts in the same scrambled order.
+
+## Returns {.doc-section .doc-section-returns}
+
+<code>[]{.parameter-name} [:]{.parameter-annotation-sep} [list of str]{.parameter-annotation}</code>
+
+:   A scrambled order. Degenerate puzzles where no such order exists (fewer than two lines, all lines identical, or every permutation solving the puzzle) fall back to a copy of ``lines`` unchanged -- there is nothing better to show, and raising would be worse than displaying an unscrambled puzzle.

@@ -8,6 +8,7 @@ website:
       section: Widget
     - contents:
       - api/checker.run_puzzle.qmd
+      - api/checker.scramble_lines.qmd
       section: Checker
     id: api
   - id: dummy-sidebar

@@ -12,13 +12,29 @@ only fail at *runtime* (a ``NameError`` from referencing a not-yet-defined
 name being the common case while the student is still arranging the lines),
 never with a ``SyntaxError``. See ``run_puzzle``'s docstring for how "the
 result" is determined from the last line.
+
+``scramble_lines`` handles the other half of a puzzle's life: turning the
+lines an author wrote (usually in the correct order) into the scrambled
+starting order the student is shown -- deterministically, and never one that
+already solves the puzzle.
 """
 
 from __future__ import annotations
 
 import ast
+import random
 
-__all__ = ["PuzzleResult", "run_puzzle"]
+__all__ = ["PuzzleResult", "run_puzzle", "scramble_lines", "DEFAULT_SEED"]
+
+#: Seed for ``scramble_lines``, so a given puzzle always scrambles the
+#: same way -- every student sees the same starting order, and a failing
+#: puzzle is reproducible from its lines alone.
+DEFAULT_SEED = 7
+
+#: How many shuffles ``scramble_lines`` tries before giving up on finding
+#: an unsolved order. One is almost always enough; the loop only matters for
+#: tiny/degenerate puzzles where many permutations happen to be solutions.
+_MAX_SCRAMBLE_ATTEMPTS = 100
 
 
 class PuzzleResult:
@@ -113,3 +129,49 @@ def run_puzzle(lines, expected):
     except Exception:
         success = False
     return PuzzleResult(success, value=value)
+
+
+def scramble_lines(lines, expected, seed=DEFAULT_SEED):
+    """Return a shuffled copy of ``lines`` that does not already solve the puzzle.
+
+    The lines an author writes are usually in (or near) the correct order,
+    and a puzzle whose starting order is already solved -- or simply the
+    order it was written in -- isn't a puzzle. This shuffles them with a
+    fixed seed, so the scramble is random-looking but deterministic (the
+    same puzzle always starts the same way), and rejects any candidate that
+
+    - equals the order that was passed in, or
+    - already produces ``expected`` (checked with ``run_puzzle``),
+
+    reshuffling until one qualifies.
+
+    Parameters
+    ----------
+    lines : list of str
+        The puzzle's lines, in any order.
+    expected : object
+        The target value, used to reject an already-solved shuffle.
+    seed : int, optional
+        Seed for the shuffle. Defaults to ``DEFAULT_SEED`` (7), so the same
+        puzzle always starts in the same scrambled order.
+
+    Returns
+    -------
+    list of str
+        A scrambled order. Degenerate puzzles where no such order exists
+        (fewer than two lines, all lines identical, or every permutation
+        solving the puzzle) fall back to a copy of ``lines`` unchanged --
+        there is nothing better to show, and raising would be worse than
+        displaying an unscrambled puzzle.
+    """
+    original = list(lines)
+    if len(original) < 2:
+        return original
+
+    rng = random.Random(seed)
+    candidate = list(original)
+    for _ in range(_MAX_SCRAMBLE_ATTEMPTS):
+        rng.shuffle(candidate)
+        if candidate != original and not run_puzzle(candidate, expected).success:
+            return candidate
+    return original

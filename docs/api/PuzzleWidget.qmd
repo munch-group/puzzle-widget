@@ -1,7 +1,7 @@
 # PuzzleWidget { #puzzle_widget.PuzzleWidget }
 
 ```python
-puzzle_widget.PuzzleWidget(lines, expected)
+puzzle_widget.PuzzleWidget(lines, expected, seed=DEFAULT_SEED)
 ```
 
 A reorderable list of code lines that checks itself against an expected result.
@@ -10,13 +10,21 @@ A reorderable list of code lines that checks itself against an expected result.
 
 <code>[**lines**]{.parameter-name} [:]{.parameter-annotation-sep} [list of str]{.parameter-annotation}</code>
 
-:   The puzzle's lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement -- no multi-line ``if``/``for``/``def``/... blocks, since those can't survive an arbitrary reordering (see ``puzzle_widget.checker``).
+:   The puzzle's lines, in any order -- the widget scrambles them itself (see ``puzzle_widget.checker.scramble_lines``), so the student never starts from the order they were written in, nor from one that already solves the puzzle. Each must be a complete, independent, non-indented statement -- no multi-line ``if``/``for``/``def``/... blocks, since those can't survive an arbitrary reordering (see ``puzzle_widget.checker``).
 
 <code>[**expected**]{.parameter-name} [:]{.parameter-annotation-sep} [[object](`object`)]{.parameter-annotation}</code>
 
 :   The value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable's name on its own line) -- an assignment produces no comparable value, exactly as it produces no cell output in a real notebook -- see ``puzzle_widget.checker.run_puzzle``.
 
+<code>[**seed**]{.parameter-name} [:]{.parameter-annotation-sep} [[int](`int`)]{.parameter-annotation} [ = ]{.parameter-default-sep} [DEFAULT_SEED]{.parameter-default}</code>
+
+:   Seed for the initial scramble. The default makes a given puzzle always start in the same scrambled order, so every student sees the same one and a puzzle's starting state is reproducible.
+
 ## Attributes {.doc-section .doc-section-attributes}
+
+<code>[**lines**]{.parameter-name} [:]{.parameter-annotation-sep} [list of str]{.parameter-annotation}</code>
+
+:   The current order, starting from the scramble of the ``lines`` argument rather than the argument itself.
 
 <code>[**success**]{.parameter-name} [:]{.parameter-annotation-sep} [[bool](`bool`)]{.parameter-annotation}</code>
 

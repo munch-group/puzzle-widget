@@ -100,3 +100,4 @@ quartodoc:
         The pure exec-and-check engine behind the widget.
       contents:
         - checker.run_puzzle
+        - checker.scramble_lines

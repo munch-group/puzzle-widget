@@ -18,3 +18,4 @@ The pure exec-and-check engine behind the widget.
 | | |
 | --- | --- |
 | [checker.run_puzzle](checker.run_puzzle.qmd#puzzle_widget.checker.run_puzzle) | Run ``lines`` (joined with newlines) in a fresh, isolated namespace and |
+| [checker.scramble_lines](checker.scramble_lines.qmd#puzzle_widget.checker.scramble_lines) | Return a shuffled copy of ``lines`` that does not already solve the puzzle. |

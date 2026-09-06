@@ -1,5 +1,5 @@
 """Headless tests for the pure exec-and-check engine (no anywidget/IPython)."""
-from puzzle_widget.checker import run_puzzle
+from puzzle_widget.checker import run_puzzle, scramble_lines
 
 
 def test_correct_order_bare_expression():
@@ -79,3 +79,60 @@ def test_each_check_runs_in_a_fresh_namespace():
     second = run_puzzle(["leaked"], 999)
     assert second.success is False
     assert "NameError" in second.error
+
+
+# --------------------------------------------------------------------------- #
+# scramble_lines                                                              #
+# --------------------------------------------------------------------------- #
+
+SOLVED = ["b = 5", "a = 10", "a + b"]
+
+
+def test_scramble_keeps_the_same_lines():
+    assert sorted(scramble_lines(SOLVED, 15)) == sorted(SOLVED)
+
+
+def test_scramble_never_returns_the_order_it_was_given():
+    assert scramble_lines(SOLVED, 15) != SOLVED
+    already_scrambled = ["a + b", "b = 5", "a = 10"]
+    assert scramble_lines(already_scrambled, 15) != already_scrambled
+
+
+def test_scramble_never_returns_an_already_solved_order():
+    # The one guarantee that matters: whatever comes back, the student still
+    # has a puzzle to solve.
+    assert run_puzzle(scramble_lines(SOLVED, 15), 15).success is False
+
+
+def test_scramble_is_deterministic_for_a_given_seed():
+    assert scramble_lines(SOLVED, 15) == scramble_lines(SOLVED, 15)
+    assert scramble_lines(SOLVED, 15, seed=3) == scramble_lines(SOLVED, 15, seed=3)
+
+
+def test_scramble_of_every_solvable_puzzle_stays_unsolved():
+    # Sweep a range of puzzle sizes: every scramble must be a permutation of
+    # the input that doesn't already produce the expected value.
+    for n in range(2, 9):
+        names = [chr(ord("a") + i) for i in range(n - 1)]
+        lines = [f"{name} = {i + 1}" for i, name in enumerate(names)] + [" + ".join(names)]
+        expected = sum(range(1, n))
+        assert run_puzzle(lines, expected).success is True  # the puzzle is solvable
+        scrambled = scramble_lines(lines, expected)
+        assert sorted(scrambled) == sorted(lines)
+        assert scrambled != lines
+        assert run_puzzle(scrambled, expected).success is False
+
+
+def test_scramble_of_a_single_line_is_returned_unchanged():
+    # Nothing to shuffle -- a degenerate puzzle is shown as-is rather than
+    # raising (see scramble_lines' docstring).
+    assert scramble_lines(["1 + 1"], 2) == ["1 + 1"]
+    assert scramble_lines([], 2) == []
+
+
+def test_scramble_falls_back_to_the_original_when_no_order_qualifies():
+    # Identical lines: every permutation is the input order *and* solves the
+    # puzzle, so no candidate can qualify -- scramble_lines gives up after
+    # its bounded retries and returns the input rather than raising.
+    lines = ["7", "7"]
+    assert scramble_lines(lines, 7) == lines
