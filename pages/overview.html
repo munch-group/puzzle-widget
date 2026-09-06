@@ -81,7 +81,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6ac2aec46ad7f46b16024ee4409aa65c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-3e9b1289f5f353c49b617ce48ad2bc38.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -231,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p><strong>puzzle-widget</strong> is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell <code>%%puzzle &lt;result&gt;</code>; every line below it becomes a draggable row. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces <code>&lt;result&gt;</code>.</p>
+<p><strong>puzzle-widget</strong> is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell <code>%%puzzle &lt;result&gt;</code>; every line below it becomes a draggable row, shuffled so the student always starts from a scrambled order. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces <code>&lt;result&gt;</code>.</p>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
@@ -252,12 +252,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="cell-2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-19T21:11:33.554851Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-19T21:11:33.554745Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-19T21:11:33.595472Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-19T21:11:33.595059Z&quot;}}" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> puzzle_widget  <span class="co"># registers the %%puzzle cell magic</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Below, the three lines are scrambled – <code>a + b</code> comes first, so running them in this order raises a <code>NameError</code> (<code>a</code> isn’t defined yet). Drag <code>a = 10</code> and <code>b = 5</code> above <code>a + b</code> (or focus a row and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces <code>15</code>.</p>
+<p>The lines below are written in a working order, but the widget shuffles them before showing them – so what you see is scrambled, and running it as shown raises a <code>NameError</code> (a name is used before it’s defined). Drag the rows (or focus one and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces <code>15</code>.</p>
 <div id="cell-5" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;execution&quot;,&quot;value&quot;:{&quot;iopub.execute_input&quot;:&quot;2026-07-19T21:11:33.597102Z&quot;,&quot;iopub.status.busy&quot;:&quot;2026-07-19T21:11:33.597017Z&quot;,&quot;iopub.status.idle&quot;:&quot;2026-07-19T21:11:33.600861Z&quot;,&quot;shell.execute_reply&quot;:&quot;2026-07-19T21:11:33.600534Z&quot;}}" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>puzzle <span class="dv">15</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">+</span> b</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>a <span class="op">+</span> b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <script type="application/vnd.jupyter.widget-view+json">
 {"model_id":"1a12d59e988846059ce0cca375afbb85","version_major":2,"version_minor":1,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
@@ -267,7 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="how-it-works" class="level2">
 <h2 class="anchored" data-anchor-id="how-it-works">How it works</h2>
-<p><code>%%puzzle &lt;result&gt;</code> parses <code>&lt;result&gt;</code> as a Python literal (<code>ast.literal_eval</code>) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, <code>puzzle_widget.checker.run_puzzle</code> executes the <em>current</em> order in a fresh, isolated namespace and reads off the value of the last line – which must be a bare expression, exactly like a notebook cell only shows output for a trailing expression, never for an assignment; the widget shows a success banner once that value equals <code>&lt;result&gt;</code>.</p>
+<p><code>%%puzzle &lt;result&gt;</code> parses <code>&lt;result&gt;</code> as a Python literal (<code>ast.literal_eval</code>) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row. The rows are <strong>shuffled</strong> first (<code>puzzle_widget.checker.scramble_lines</code>): the starting order is never the one the lines were written in, and never one that already produces <code>&lt;result&gt;</code>, so there is always a puzzle to solve. The shuffle uses a fixed seed, so the same puzzle always starts the same way. After every reorder, <code>puzzle_widget.checker.run_puzzle</code> executes the <em>current</em> order in a fresh, isolated namespace and reads off the value of the last line – which must be a bare expression, exactly like a notebook cell only shows output for a trailing expression, never for an assignment; the widget shows a success banner once that value equals <code>&lt;result&gt;</code>.</p>
 <p>A puzzle’s lines must be independent, non-indented, single-line statements – no multi-line <code>if</code>/<code>for</code>/<code>def</code>/… blocks – so that <em>every</em> ordering at least parses; only the value produced should depend on getting the order right.</p>
 </section>
 <section id="learning-more" class="level2">

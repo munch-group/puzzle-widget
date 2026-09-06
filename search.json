@@ -4,7 +4,7 @@
     "href": "pages/example.html",
     "title": "Examples",
     "section": "",
-    "text": "A couple more puzzles, one straight-line and one using a string method.\nimport puzzle_widget",
+    "text": "A couple more puzzles, one straight-line and one using a string method. Both are written here in a working order – the widget shuffles the rows before the student sees them.\nimport puzzle_widget",
     "crumbs": [
       "Examples",
       "Examples"
@@ -15,7 +15,7 @@
     "href": "pages/example.html#a-slightly-longer-chain",
     "title": "Examples",
     "section": "A slightly longer chain",
-    "text": "A slightly longer chain\n\n%%puzzle 44\ntotal = total + z\nz = 2\ntotal = x * y\ntotal\ny = 6\nx = 7",
+    "text": "A slightly longer chain\n\n%%puzzle 44\nx = 7\ny = 6\nz = 2\ntotal = x * y\ntotal = total + z\ntotal",
     "crumbs": [
       "Examples",
       "Examples"
@@ -26,21 +26,10 @@
     "href": "pages/example.html#string-methods",
     "title": "Examples",
     "section": "String methods",
-    "text": "String methods\n\n%%puzzle 'HELLO, WORLD'\ngreeting.upper()\ngreeting = 'hello, ' + name\nname = 'world'",
+    "text": "String methods\n\n%%puzzle 'HELLO, WORLD'\nname = 'world'\ngreeting = 'hello, ' + name\ngreeting.upper()",
     "crumbs": [
       "Examples",
       "Examples"
-    ]
-  },
-  {
-    "objectID": "api/widget.register_puzzle_magic.html",
-    "href": "api/widget.register_puzzle_magic.html",
-    "title": "widget.register_puzzle_magic",
-    "section": "",
-    "text": "widget.register_puzzle_magic\npuzzle_widget.widget.register_puzzle_magic(ipython=None)\nRegister the %%puzzle cell magic.\nIn IPython/Jupyter, %%puzzle &lt;result&gt; turns the cell’s lines into a reorderable PuzzleWidget that checks itself against &lt;result&gt; (a Python literal) after every reorder::\n%%puzzle 15\na + b\nb = 5\na = 10\n&lt;result&gt; must be a literal (number, string, list, …) parsed with ast.literal_eval – not an arbitrary expression, since the puzzle runs in its own isolated namespace rather than the notebook’s, so a variable reference wouldn’t resolve to anything meaningful. Blank lines in the cell are dropped and each remaining line is stripped of surrounding whitespace before becoming a draggable row.\nCalled automatically on import; returns True when a live shell is found, False otherwise (e.g. plain Python).",
-    "crumbs": [
-      "Widget",
-      "widget.register_puzzle_magic"
     ]
   },
   {
@@ -77,36 +66,14 @@
     ]
   },
   {
-    "objectID": "api/PuzzleWidget.html",
-    "href": "api/PuzzleWidget.html",
-    "title": "PuzzleWidget",
+    "objectID": "api/widget.register_puzzle_magic.html",
+    "href": "api/widget.register_puzzle_magic.html",
+    "title": "widget.register_puzzle_magic",
     "section": "",
-    "text": "puzzle_widget.PuzzleWidget(lines, expected)\nA reorderable list of code lines that checks itself against an expected result.\n\n\n\nlines : list of str\n\nThe puzzle’s lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable’s name on its own line) – an assignment produces no comparable value, exactly as it produces no cell output in a real notebook – see puzzle_widget.checker.run_puzzle.\n\n\n\n\n\n\nsuccess : bool\n\nWhether the current order is correct. Recomputed automatically whenever lines changes (i.e. after every drag/keyboard reorder).\n\nlast_error : str or None\n\nA short description of the exception raised by the current order, if any – expected and routine while the student is still arranging a scrambled puzzle, not shown in the widget UI itself.",
+    "text": "widget.register_puzzle_magic\npuzzle_widget.widget.register_puzzle_magic(ipython=None)\nRegister the %%puzzle cell magic.\nIn IPython/Jupyter, %%puzzle &lt;result&gt; turns the cell’s lines into a reorderable PuzzleWidget that checks itself against &lt;result&gt; (a Python literal) after every reorder. The lines are scrambled by the widget, so they can be written in whatever order reads best – the correct one included::\n%%puzzle 15\na = 10\nb = 5\na + b\n&lt;result&gt; must be a literal (number, string, list, …) parsed with ast.literal_eval – not an arbitrary expression, since the puzzle runs in its own isolated namespace rather than the notebook’s, so a variable reference wouldn’t resolve to anything meaningful. Blank lines in the cell are dropped and each remaining line is stripped of surrounding whitespace before becoming a draggable row.\nCalled automatically on import; returns True when a live shell is found, False otherwise (e.g. plain Python).",
     "crumbs": [
       "Widget",
-      "PuzzleWidget"
-    ]
-  },
-  {
-    "objectID": "api/PuzzleWidget.html#parameters",
-    "href": "api/PuzzleWidget.html#parameters",
-    "title": "PuzzleWidget",
-    "section": "",
-    "text": "lines : list of str\n\nThe puzzle’s lines in their initial (typically scrambled) order. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable’s name on its own line) – an assignment produces no comparable value, exactly as it produces no cell output in a real notebook – see puzzle_widget.checker.run_puzzle.",
-    "crumbs": [
-      "Widget",
-      "PuzzleWidget"
-    ]
-  },
-  {
-    "objectID": "api/PuzzleWidget.html#attributes",
-    "href": "api/PuzzleWidget.html#attributes",
-    "title": "PuzzleWidget",
-    "section": "",
-    "text": "success : bool\n\nWhether the current order is correct. Recomputed automatically whenever lines changes (i.e. after every drag/keyboard reorder).\n\nlast_error : str or None\n\nA short description of the exception raised by the current order, if any – expected and routine while the student is still arranging a scrambled puzzle, not shown in the widget UI itself.",
-    "crumbs": [
-      "Widget",
-      "PuzzleWidget"
+      "widget.register_puzzle_magic"
     ]
   },
   {
@@ -114,7 +81,7 @@
     "href": "api/index.html",
     "title": "Function reference",
     "section": "",
-    "text": "The reorderable puzzle widget and the %%puzzle cell magic.\n\n\n\nPuzzleWidget\nA reorderable list of code lines that checks itself against an expected result.\n\n\nwidget.register_puzzle_magic\nRegister the %%puzzle cell magic.\n\n\n\n\n\n\nThe pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and",
+    "text": "The reorderable puzzle widget and the %%puzzle cell magic.\n\n\n\nPuzzleWidget\nA reorderable list of code lines that checks itself against an expected result.\n\n\nwidget.register_puzzle_magic\nRegister the %%puzzle cell magic.\n\n\n\n\n\n\nThe pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and\n\n\nchecker.scramble_lines\nReturn a shuffled copy of lines that does not already solve the puzzle.",
     "crumbs": [
       "Function reference"
     ]
@@ -134,9 +101,75 @@
     "href": "api/index.html#checker",
     "title": "Function reference",
     "section": "",
-    "text": "The pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and",
+    "text": "The pure exec-and-check engine behind the widget.\n\n\n\nchecker.run_puzzle\nRun lines (joined with newlines) in a fresh, isolated namespace and\n\n\nchecker.scramble_lines\nReturn a shuffled copy of lines that does not already solve the puzzle.",
     "crumbs": [
       "Function reference"
+    ]
+  },
+  {
+    "objectID": "api/PuzzleWidget.html",
+    "href": "api/PuzzleWidget.html",
+    "title": "PuzzleWidget",
+    "section": "",
+    "text": "puzzle_widget.PuzzleWidget(lines, expected, seed=DEFAULT_SEED)\nA reorderable list of code lines that checks itself against an expected result.\n\n\n\nlines : list of str\n\nThe puzzle’s lines, in any order – the widget scrambles them itself (see puzzle_widget.checker.scramble_lines), so the student never starts from the order they were written in, nor from one that already solves the puzzle. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable’s name on its own line) – an assignment produces no comparable value, exactly as it produces no cell output in a real notebook – see puzzle_widget.checker.run_puzzle.\n\nseed : int = DEFAULT_SEED\n\nSeed for the initial scramble. The default makes a given puzzle always start in the same scrambled order, so every student sees the same one and a puzzle’s starting state is reproducible.\n\n\n\n\n\n\nlines : list of str\n\nThe current order, starting from the scramble of the lines argument rather than the argument itself.\n\nsuccess : bool\n\nWhether the current order is correct. Recomputed automatically whenever lines changes (i.e. after every drag/keyboard reorder).\n\nlast_error : str or None\n\nA short description of the exception raised by the current order, if any – expected and routine while the student is still arranging a scrambled puzzle, not shown in the widget UI itself.",
+    "crumbs": [
+      "Widget",
+      "PuzzleWidget"
+    ]
+  },
+  {
+    "objectID": "api/PuzzleWidget.html#parameters",
+    "href": "api/PuzzleWidget.html#parameters",
+    "title": "PuzzleWidget",
+    "section": "",
+    "text": "lines : list of str\n\nThe puzzle’s lines, in any order – the widget scrambles them itself (see puzzle_widget.checker.scramble_lines), so the student never starts from the order they were written in, nor from one that already solves the puzzle. Each must be a complete, independent, non-indented statement – no multi-line if/for/def/… blocks, since those can’t survive an arbitrary reordering (see puzzle_widget.checker).\n\nexpected : object\n\nThe value the lines should produce, in the correct order, to count as solved. Compared against the value of the last line, which must be a bare expression (e.g. a variable’s name on its own line) – an assignment produces no comparable value, exactly as it produces no cell output in a real notebook – see puzzle_widget.checker.run_puzzle.\n\nseed : int = DEFAULT_SEED\n\nSeed for the initial scramble. The default makes a given puzzle always start in the same scrambled order, so every student sees the same one and a puzzle’s starting state is reproducible.",
+    "crumbs": [
+      "Widget",
+      "PuzzleWidget"
+    ]
+  },
+  {
+    "objectID": "api/PuzzleWidget.html#attributes",
+    "href": "api/PuzzleWidget.html#attributes",
+    "title": "PuzzleWidget",
+    "section": "",
+    "text": "lines : list of str\n\nThe current order, starting from the scramble of the lines argument rather than the argument itself.\n\nsuccess : bool\n\nWhether the current order is correct. Recomputed automatically whenever lines changes (i.e. after every drag/keyboard reorder).\n\nlast_error : str or None\n\nA short description of the exception raised by the current order, if any – expected and routine while the student is still arranging a scrambled puzzle, not shown in the widget UI itself.",
+    "crumbs": [
+      "Widget",
+      "PuzzleWidget"
+    ]
+  },
+  {
+    "objectID": "api/checker.scramble_lines.html",
+    "href": "api/checker.scramble_lines.html",
+    "title": "checker.scramble_lines",
+    "section": "",
+    "text": "puzzle_widget.checker.scramble_lines(lines, expected, seed=DEFAULT_SEED)\nReturn a shuffled copy of lines that does not already solve the puzzle.\nThe lines an author writes are usually in (or near) the correct order, and a puzzle whose starting order is already solved – or simply the order it was written in – isn’t a puzzle. This shuffles them with a fixed seed, so the scramble is random-looking but deterministic (the same puzzle always starts the same way), and rejects any candidate that\n\nequals the order that was passed in, or\nalready produces expected (checked with run_puzzle),\n\nreshuffling until one qualifies.\n\n\n\nlines : list of str\n\nThe puzzle’s lines, in any order.\n\nexpected : object\n\nThe target value, used to reject an already-solved shuffle.\n\nseed : int = DEFAULT_SEED\n\nSeed for the shuffle. Defaults to DEFAULT_SEED (7), so the same puzzle always starts in the same scrambled order.\n\n\n\n\n\n\n : list of str\n\nA scrambled order. Degenerate puzzles where no such order exists (fewer than two lines, all lines identical, or every permutation solving the puzzle) fall back to a copy of lines unchanged – there is nothing better to show, and raising would be worse than displaying an unscrambled puzzle.",
+    "crumbs": [
+      "Checker",
+      "checker.scramble_lines"
+    ]
+  },
+  {
+    "objectID": "api/checker.scramble_lines.html#parameters",
+    "href": "api/checker.scramble_lines.html#parameters",
+    "title": "checker.scramble_lines",
+    "section": "",
+    "text": "lines : list of str\n\nThe puzzle’s lines, in any order.\n\nexpected : object\n\nThe target value, used to reject an already-solved shuffle.\n\nseed : int = DEFAULT_SEED\n\nSeed for the shuffle. Defaults to DEFAULT_SEED (7), so the same puzzle always starts in the same scrambled order.",
+    "crumbs": [
+      "Checker",
+      "checker.scramble_lines"
+    ]
+  },
+  {
+    "objectID": "api/checker.scramble_lines.html#returns",
+    "href": "api/checker.scramble_lines.html#returns",
+    "title": "checker.scramble_lines",
+    "section": "",
+    "text": ": list of str\n\nA scrambled order. Degenerate puzzles where no such order exists (fewer than two lines, all lines identical, or every permutation solving the puzzle) fall back to a copy of lines unchanged – there is nothing better to show, and raising would be worse than displaying an unscrambled puzzle.",
+    "crumbs": [
+      "Checker",
+      "checker.scramble_lines"
     ]
   },
   {
@@ -144,7 +177,7 @@
     "href": "pages/overview.html",
     "title": "Overview",
     "section": "",
-    "text": "puzzle-widget is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell %%puzzle &lt;result&gt;; every line below it becomes a draggable row. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces &lt;result&gt;.",
+    "text": "puzzle-widget is a Jupyter widget where students drag scrambled code lines into the correct order. Tag a cell %%puzzle &lt;result&gt;; every line below it becomes a draggable row, shuffled so the student always starts from a scrambled order. Drag a row (or focus it and press the arrow keys) to move it up or down – the widget re-runs the current order after every move and shows a checkmark once it produces &lt;result&gt;.",
     "crumbs": [
       "Overview"
     ]
@@ -154,7 +187,7 @@
     "href": "pages/overview.html#installation",
     "title": "Overview",
     "section": "Installation",
-    "text": "Installation\n\npixicondapip\n\n\npixi workspace channel add munch-group\npixi add puzzle-widget\n\n\nconda install -c munch-group puzzle-widget\n\n\npip install puzzle-widget\n\n\n\n\nimport puzzle_widget  # registers the %%puzzle cell magic\n\nBelow, the three lines are scrambled – a + b comes first, so running them in this order raises a NameError (a isn’t defined yet). Drag a = 10 and b = 5 above a + b (or focus a row and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces 15.\n\n%%puzzle 15\na + b\nb = 5\na = 10",
+    "text": "Installation\n\npixicondapip\n\n\npixi workspace channel add munch-group\npixi add puzzle-widget\n\n\nconda install -c munch-group puzzle-widget\n\n\npip install puzzle-widget\n\n\n\n\nimport puzzle_widget  # registers the %%puzzle cell magic\n\nThe lines below are written in a working order, but the widget shuffles them before showing them – so what you see is scrambled, and running it as shown raises a NameError (a name is used before it’s defined). Drag the rows (or focus one and use the arrow keys) to fix the order; the widget shows “✓ Correct!” once it produces 15.\n\n%%puzzle 15\na = 10\nb = 5\na + b",
     "crumbs": [
       "Overview"
     ]
@@ -164,7 +197,7 @@
     "href": "pages/overview.html#how-it-works",
     "title": "Overview",
     "section": "How it works",
-    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row, in the order written. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line – which must be a bare expression, exactly like a notebook cell only shows output for a trailing expression, never for an assignment; the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
+    "text": "How it works\n%%puzzle &lt;result&gt; parses &lt;result&gt; as a Python literal (ast.literal_eval) and splits the cell into non-blank, whitespace-stripped lines – each becomes one draggable row. The rows are shuffled first (puzzle_widget.checker.scramble_lines): the starting order is never the one the lines were written in, and never one that already produces &lt;result&gt;, so there is always a puzzle to solve. The shuffle uses a fixed seed, so the same puzzle always starts the same way. After every reorder, puzzle_widget.checker.run_puzzle executes the current order in a fresh, isolated namespace and reads off the value of the last line – which must be a bare expression, exactly like a notebook cell only shows output for a trailing expression, never for an assignment; the widget shows a success banner once that value equals &lt;result&gt;.\nA puzzle’s lines must be independent, non-indented, single-line statements – no multi-line if/for/def/… blocks – so that every ordering at least parses; only the value produced should depend on getting the order right.",
     "crumbs": [
       "Overview"
     ]

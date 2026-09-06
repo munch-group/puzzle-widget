@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>widget.register_puzzle_magic – puzzle-widget</title>
+<title>checker.scramble_lines – puzzle-widget</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -71,8 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../api/checker.run_puzzle.html" rel="next">
-<link href="../api/PuzzleWidget.html" rel="prev">
+<link href="../api/checker.run_puzzle.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -155,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/PuzzleWidget.html">Widget</a></li><li class="breadcrumb-item"><a href="../api/widget.register_puzzle_magic.html">widget.register_puzzle_magic</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/checker.run_puzzle.html">Checker</a></li><li class="breadcrumb-item"><a href="../api/checker.scramble_lines.html">checker.scramble_lines</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -190,7 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../api/widget.register_puzzle_magic.html" class="sidebar-item-text sidebar-link active">
+  <a href="../api/widget.register_puzzle_magic.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">widget.register_puzzle_magic</span></a>
   </div>
 </li>
@@ -213,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../api/checker.scramble_lines.html" class="sidebar-item-text sidebar-link">
+  <a href="../api/checker.scramble_lines.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">checker.scramble_lines</span></a>
   </div>
 </li>
@@ -229,29 +228,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#puzzle_widget.widget.register_puzzle_magic" id="toc-puzzle_widget.widget.register_puzzle_magic" class="nav-link active" data-scroll-target="#puzzle_widget.widget.register_puzzle_magic">widget.register_puzzle_magic</a></li>
+  <li><a href="#puzzle_widget.checker.scramble_lines" id="toc-puzzle_widget.checker.scramble_lines" class="nav-link active" data-scroll-target="#puzzle_widget.checker.scramble_lines">checker.scramble_lines</a>
+  <ul class="collapse">
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">Parameters</a></li>
+  <li><a href="#returns" id="toc-returns" class="nav-link" data-scroll-target="#returns">Returns</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/PuzzleWidget.html">Widget</a></li><li class="breadcrumb-item"><a href="../api/widget.register_puzzle_magic.html">widget.register_puzzle_magic</a></li></ol></nav></header>
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../api/checker.run_puzzle.html">Checker</a></li><li class="breadcrumb-item"><a href="../api/checker.scramble_lines.html">checker.scramble_lines</a></li></ol></nav></header>
 
 
 
 
-<section id="puzzle_widget.widget.register_puzzle_magic" class="level1">
-<h1>widget.register_puzzle_magic</h1>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>puzzle_widget.widget.register_puzzle_magic(ipython<span class="op">=</span><span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Register the <code>%%puzzle</code> cell magic.</p>
-<p>In IPython/Jupyter, <code>%%puzzle &lt;result&gt;</code> turns the cell’s lines into a reorderable <code>PuzzleWidget</code> that checks itself against <code>&lt;result&gt;</code> (a Python literal) after every reorder. The lines are scrambled by the widget, so they can be written in whatever order reads best – the correct one included::</p>
-<pre><code>%%puzzle 15
-a = 10
-b = 5
-a + b</code></pre>
-<p><code>&lt;result&gt;</code> must be a literal (number, string, list, …) parsed with <code>ast.literal_eval</code> – not an arbitrary expression, since the puzzle runs in its own isolated namespace rather than the notebook’s, so a variable reference wouldn’t resolve to anything meaningful. Blank lines in the cell are dropped and each remaining line is stripped of surrounding whitespace before becoming a draggable row.</p>
-<p>Called automatically on import; returns True when a live shell is found, False otherwise (e.g.&nbsp;plain Python).</p>
+<section id="puzzle_widget.checker.scramble_lines" class="level1">
+<h1>checker.scramble_lines</h1>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>puzzle_widget.checker.scramble_lines(lines, expected, seed<span class="op">=</span>DEFAULT_SEED)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Return a shuffled copy of <code>lines</code> that does not already solve the puzzle.</p>
+<p>The lines an author writes are usually in (or near) the correct order, and a puzzle whose starting order is already solved – or simply the order it was written in – isn’t a puzzle. This shuffles them with a fixed seed, so the scramble is random-looking but deterministic (the same puzzle always starts the same way), and rejects any candidate that</p>
+<ul>
+<li>equals the order that was passed in, or</li>
+<li>already produces <code>expected</code> (checked with <code>run_puzzle</code>),</li>
+</ul>
+<p>reshuffling until one qualifies.</p>
+<section id="parameters" class="level2 doc-section doc-section-parameters">
+<h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
+<dl>
+<dt><code><span class="parameter-name"><strong>lines</strong></span> <span class="parameter-annotation-sep">:</span> <span class="parameter-annotation">list of str</span></code></dt>
+<dd>
+<p>The puzzle’s lines, in any order.</p>
+</dd>
+<dt><code><span class="parameter-name"><strong>expected</strong></span> <span class="parameter-annotation-sep">:</span> <span class="parameter-annotation"><code>object</code></span></code></dt>
+<dd>
+<p>The target value, used to reject an already-solved shuffle.</p>
+</dd>
+<dt><code><span class="parameter-name"><strong>seed</strong></span> <span class="parameter-annotation-sep">:</span> <span class="parameter-annotation"><code>int</code></span> <span class="parameter-default-sep">=</span> <span class="parameter-default">DEFAULT_SEED</span></code></dt>
+<dd>
+<p>Seed for the shuffle. Defaults to <code>DEFAULT_SEED</code> (7), so the same puzzle always starts in the same scrambled order.</p>
+</dd>
+</dl>
+</section>
+<section id="returns" class="level2 doc-section doc-section-returns">
+<h2 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h2>
+<dl>
+<dt><code><span class="parameter-name"></span> <span class="parameter-annotation-sep">:</span> <span class="parameter-annotation">list of str</span></code></dt>
+<dd>
+<p>A scrambled order. Degenerate puzzles where no such order exists (fewer than two lines, all lines identical, or every permutation solving the puzzle) fall back to a copy of <code>lines</code> unchanged – there is nothing better to show, and raising would be worse than displaying an unscrambled puzzle.</p>
+</dd>
+</dl>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -657,14 +685,11 @@ a + b</code></pre>
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../api/PuzzleWidget.html" class="pagination-link" aria-label="PuzzleWidget">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">PuzzleWidget</span>
+      <a href="../api/checker.run_puzzle.html" class="pagination-link" aria-label="checker.run_puzzle">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">checker.run_puzzle</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../api/checker.run_puzzle.html" class="pagination-link" aria-label="checker.run_puzzle">
-        <span class="nav-page-text">checker.run_puzzle</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
