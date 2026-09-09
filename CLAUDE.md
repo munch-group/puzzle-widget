@@ -189,6 +189,34 @@ Hand-rolled vanilla JS, no external/CDN dependencies (same convention as
   `test_each_check_runs_in_a_fresh_namespace`) -- don't be tempted to reuse
   one namespace across checks "for efficiency"; it would let an earlier
   (wrong) order's state leak into evaluating a later one.
+- **Puzzle state must ship in `comm_open`, not a follow-up `update`.**
+  `PuzzleWidget.__init__` passes `lines` and `expected_repr` as constructor
+  kwargs rather than assigning them afterwards. This is load-bearing, not style:
+  `ipywidgets.Widget.__init__` applies kwargs to the traits and only then calls
+  `open()`, which publishes `comm_open` carrying `get_state()`. Assigning them
+  after `super().__init__()` instead (as the code originally did) left
+  `comm_open` advertising the empty defaults and pushed the puzzle out as
+  separate `update` comm messages -- which the frontend drops for the *first*
+  anywidget of a browser session, while it is still asynchronously loading the
+  anywidget package and this widget's `_esm`: the comm's message handler is not
+  attached until that load resolves. The view then rendered off `lines`'s empty
+  default -- a puzzle with no rows at all -- and never recovered, because no
+  `change:lines` event follows for `render()`'s listener to catch. Confirmed by
+  driving a real kernel over `jupyter_client` and reading the iopub comm
+  traffic: `comm_open` carried `lines=[] expected_repr='' success=False`,
+  followed by two separate `update` messages with the real values.
+  **Ordering inside `__init__` matters and is not arbitrary**: `_expected` and
+  `last_error` are assigned *before* `super().__init__()`, because traitlets
+  delivers the `lines` change while the constructor is still applying its
+  kwargs -- so `_lines_changed` -> `_check()` runs before that call returns and
+  needs both to already exist (verified empirically). That is also why `success`
+  is correct in `comm_open` without being passed explicitly: `_check()` has
+  already set it by the time `open()` reads the state.
+  `test_puzzle_state_is_populated_before_the_comm_opens` pins all of this by
+  spying on `open()` and asserting `get_state()` is already complete there.
+  Any future synced traitlet holding puzzle content belongs in the same initial
+  state for the same reason. `steps-widget`, `sandbox-widget` and
+  `codelens-widget` all carry the identical fix.
 
 ## Environment & commands
 

@@ -276,12 +276,33 @@ class PuzzleWidget(anywidget.AnyWidget):
     success = traitlets.Bool(False).tag(sync=True)
 
     def __init__(self, lines, expected, seed=DEFAULT_SEED):
-        super().__init__()
+        # Both synced traits go in as constructor kwargs so they are part of the
+        # state the widget's `comm_open` carries. Assigning them after
+        # super().__init__() instead leaves `comm_open` advertising the empty
+        # defaults and pushes the real puzzle out as separate follow-up `update`
+        # comm messages -- which the frontend drops for the first anywidget of a
+        # browser session, while it is still asynchronously loading the anywidget
+        # package and this widget's `_esm`: the comm's message handler is not
+        # attached until that load resolves. The view then renders off `lines`'s
+        # empty default -- a puzzle with no rows in it at all -- and never
+        # recovers, because no `change:lines` event follows for render()'s
+        # listener to catch. See the same fix in steps-widget's StepsWidget.
+        #
+        # `_expected` and `last_error` are set first because traitlets delivers
+        # the `lines` change while super().__init__() is still applying its
+        # kwargs -- so `_lines_changed` -> `_check()` runs before that call
+        # returns, and needs both to already exist. That is also what leaves
+        # `success` correct in `comm_open` without a third assignment here:
+        # `_check()` has already run by the time open() reads the state.
+        # `last_error` still gets a value of its own for the degenerate case of
+        # an empty puzzle, where `lines` never differs from its default and no
+        # change is delivered at all.
         self._expected = expected
-        self.expected_repr = repr(expected)
         self.last_error = None
-        self.lines = scramble_lines(lines, expected, seed=seed)
-        self._check()
+        super().__init__(
+            lines=scramble_lines(lines, expected, seed=seed),
+            expected_repr=repr(expected),
+        )
 
     @traitlets.observe("lines")
     def _lines_changed(self, change):
