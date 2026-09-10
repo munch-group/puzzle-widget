@@ -129,7 +129,7 @@ function render({ model, el }){
 
     const goal = document.createElement("div");
     goal.className = "pz-goal";
-    goal.innerHTML = "Arrange the lines to produce: <code>" + esc(model.get("expected_repr")) + "</code>";
+    goal.innerHTML = "Reorder the lines to make the last  one evaluate to: <code>" + esc(model.get("expected_repr")) + "</code>";
     root.appendChild(goal);
 
     const list = document.createElement("ol");
